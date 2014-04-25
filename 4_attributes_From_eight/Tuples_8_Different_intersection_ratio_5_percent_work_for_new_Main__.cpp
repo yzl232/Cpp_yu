@@ -119,8 +119,10 @@ int main(int argc, char** argv) {
 
 		int buckets = 32768, depth = 1, s1 = 1;
 
-		String weekdays[7] = { "Sun", "Mon", "Tues", "Wednes", "Thurs", "Fri",
-				"Satur" };
+	    string weekdays[7] = { "Sun", "Mon", "Tues", "Wednes", "Thurs", "Fri",
+	    			"Satur" };
+	    string weekDay;
+	    int weekDayNum;
 
 		if (argc > 1)
 			buckets = atoi(argv[1]);
@@ -173,7 +175,7 @@ int main(int argc, char** argv) {
 			string region = regions[reg];
 			string super_region = region.substr(0, 2);
 			string sub_region = region.substr(3);
-			for (day = 1; hr < 8; ++day) {
+			for (day = 1; day < 8; ++day) {
 				for (int hr = 0; hr < 24; ++hr) {
 					string hour = intToStringPad(hr, 2);
 					struct tm epoch;
@@ -184,7 +186,20 @@ int main(int argc, char** argv) {
 					epoch.tm_mon = month - 1;
 					epoch.tm_year = year - 1900;
 					string epoch_time = intToString(mktime(&epoch));
+					
+					
+				    std::tm time_in = { 0, 0, 0, // second, minute, hour
+				         day-0, month-1, year - 1900 }; // 1-based day, 0-based month, year since 1900
 
+				 std::time_t time_temp = std::mktime( & time_in );
+
+				 // the return value from localtime is a static global - do not call
+				 // this function from more than one thread!
+				 std::tm const *time_out = std::localtime( & time_temp );
+
+				 //std::cout << "I was born on (Sunday = 0) D.O.W. " << time_out->tm_wday << '\n';
+				    weekDayNum = time_out->tm_wday;
+				    weekDay =  weekdays[weekDayNum] ;
 					//pFile << region << " " << hour << " " << epoch_time << endl;
 
 					string filename = base_path + "/" + region + "/FULL/"
