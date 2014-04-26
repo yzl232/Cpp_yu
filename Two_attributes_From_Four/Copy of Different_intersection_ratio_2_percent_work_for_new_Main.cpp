@@ -104,13 +104,13 @@ int main(int argc, char** argv) {
 
 		string base_path("/q/gp04/dpi/SQM2");
 		string regions[] = { "NC/ILNWI", "NC/MININ", "NC/NSNMI", "NC/OHWPA",
-				"NE/NWEND", "NE/NYCNJ", "NE/PANNJ", "NE/UPSNY", "NE/VAWVA",
-				"NE/WADCM", "SC/ARNOK", "SC/MONKS", "SC/NTHTX", "SC/STHTX",
-				"SE/ALMSL", "SE/GEORG", "SE/NCNSC", "SE/NTHFL", "SE/PRTRC",
-				"SE/STHFL", "SE/TNNKY", "UK/AKRUK", "UK/ARLUK", "UK/ATCUK",
-				"UK/BTCUK", "UK/BWYUK", "UK/CNCUK", "UK/STCUK", "UK/VNNUK",
-				"UK/VTCUK", "WS/AZNMN", "WS/pFile W", "WS/LASCA", "WS/SDLVH",
-				"WS/SFNSA", "WS/SORID" };
+					"NE/NWEND", "NE/NYCNJ", "NE/PANNJ", "NE/UPSNY", "NE/VAWVA",
+					"NE/WADCM", "SC/ARNOK", "SC/MONKS", "SC/NTHTX", "SC/STHTX",
+					"SE/ALMSL", "SE/GEORG", "SE/NCNSC", "SE/NTHFL", "SE/PRTRC",
+					"SE/STHFL", "SE/TNNKY", "UK/AKRUK", "UK/ARLUK", "UK/ATCUK",
+					"UK/BTCUK", "UK/BWYUK", "UK/CNCUK", "UK/STCUK", "UK/VNNUK",
+					"UK/VTCUK", "WS/AZNMN", "WS/COUTW", "WS/LASCA", "WS/SDLVH",
+					"WS/SFNSA", "WS/SORID" };
 		int num_regions = 1; //36;
 		prng_type *prng;
 		prng = prng_Init(-time(NULL), 2);

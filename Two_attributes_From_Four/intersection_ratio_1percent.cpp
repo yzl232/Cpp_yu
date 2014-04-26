@@ -104,7 +104,16 @@ pFile.open("/export/qhome/zyu/intersect/zhenglin/data/src/bucket_131072_results_
         for (int running_time =0; running_time < 10; running_time++)
         {
                 string base_path("/q/gp04/dpi/SQM2");
-                //string regions[] = {"NC/ILNWI", "NC/MININ", "NC/NSNMI", "NC/OHWPA", "NE/NWEND", "NE/NYCNJ", "NE/PANNJ", "NE/UPSNY", "NE/VAWVA", "NE/WADCM", "SC/ARNOK", "SC/MONKS", "SC/NTHTX", "SC/STHTX", "SE/ALMSL", "SE/GEORG", "SE/NCNSC", "SE/NTHFL", "SE/PRTRC", "SE/STHFL", "SE/TNNKY", "UK/AKRUK", "UK/ARLUK", "UK/ATCUK", "UK/BTCUK", "UK/BWYUK", "UK/CNCUK", "UK/STCUK", "UK/VNNUK", "UK/VTCUK", "WS/AZNMN", "WS/pFileW", "WS/LASCA", "WS/SDLVH", "WS/SFNSA", "WS/SORID"};
+                /*string regions[] = { "NC/ILNWI", "NC/MININ", "NC/NSNMI", "NC/OHWPA",
+			"NE/NWEND", "NE/NYCNJ", "NE/PANNJ", "NE/UPSNY", "NE/VAWVA",
+			"NE/WADCM", "SC/ARNOK", "SC/MONKS", "SC/NTHTX", "SC/STHTX",
+			"SE/ALMSL", "SE/GEORG", "SE/NCNSC", "SE/NTHFL", "SE/PRTRC",
+			"SE/STHFL", "SE/TNNKY", "UK/AKRUK", "UK/ARLUK", "UK/ATCUK",
+			"UK/BTCUK", "UK/BWYUK", "UK/CNCUK", "UK/STCUK", "UK/VNNUK",
+			"UK/VTCUK", "WS/AZNMN", "WS/COUTW", "WS/LASCA", "WS/SDLVH",
+			"WS/SFNSA", "WS/SORID" };
+			
+			*/
                 //int num_regions = 10; //36;
                 prng_type *prng;
                 prng = prng_Init(-time(NULL), 2);
