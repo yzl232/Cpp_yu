@@ -31,6 +31,26 @@ string intToStringPad(int a, size_t length) {
 	return s;
 }
 
+
+string getWeekDay(int day, int month, int year){
+	string weekdays[7] = { "Sun", "Mon", "Tues", "Wednes", "Thurs", "Fri",
+			"Satur" };
+
+	std::tm time_in = { 0, 0, 0, // second, minute, hour
+			day - 0, month - 1, year - 1900 }; // 1-based day, 0-based month, year since 1900
+
+	std::time_t time_temp = std::mktime(&time_in);
+
+	// the return value from localtime is a static global - do not call
+	// this function from more than one thread!
+	std::tm const *time_out = std::localtime(&time_temp);
+
+	//std::cout << "I was born on (Sunday = 0) D.O.W. " << time_out->tm_wday << '\n';
+	weekDayNum = time_out->tm_wday;
+	return weekdays[weekDayNum];
+	
+}
+
 /*** Functions for string tokenizer ***/
 // from: http://stackoverflow.com/questions/236129/how-to-split-a-string-in-c
 vector<string> &split(const string &s, char delim, vector<string> &elems) {
@@ -82,7 +102,7 @@ int main(int argc, char** argv) {
 
 		ofstream pFile;
 		pFile.open(
-				"/export/qhome/zyu/intersect/zhenglin/data/src/ratio_five_percent_results_32768.txt.txt",
+				"/export/qhome/zyu/intersect/zhenglin/data/src/Four_8_experiments/sample_file_results_4096.txt",
 				ios::app);
 
 		if (pFile != NULL) {
@@ -92,12 +112,12 @@ int main(int argc, char** argv) {
 			int test2 = 2;
 
 			pFile << "day test " + intToStringPad(test1, 4)
-					+ " combination test  " + intToStringPad(test2, 4) + " "
-					+ "anomolous \n";
+							+ " combination test  " + intToStringPad(test2, 4) + " "
+							+ "anomolous \n";
 
 			pFile.close();
 			pFile.open(
-					"/export/qhome/zyu/intersect/zhenglin/data/src/ratio_five_percent_results_32768.txt.txt",
+					"/export/qhome/zyu/intersect/zhenglin/data/src/Four_8_experiments/sample_file_results_4096.txt",
 					ios::app);
 
 		}
@@ -117,12 +137,11 @@ int main(int argc, char** argv) {
 
 		int day = 1, month = 1, year = 2014;
 
-		int buckets = 32768, depth = 1, s1 = 1;
+		int buckets = 4096, depth = 1, s1 = 1;
 
-	    string weekdays[7] = { "Sun", "Mon", "Tues", "Wednes", "Thurs", "Fri",
-	    			"Satur" };
-	    string weekDay;
-	    int weekDayNum;
+		
+		string weekDay;
+		int weekDayNum;
 
 		if (argc > 1)
 			buckets = atoi(argv[1]);
@@ -146,18 +165,25 @@ int main(int argc, char** argv) {
 			// read in the pairs that we wish to sample
 			// RNC(1)/service(17) pairs and item_ID(10)/domain pairs(18)
 			vector<string> pair1, pair2;
-			string
-					sample_filename =
-							"/export/qhome/zyu/intersect/zhenglin/data/src/intersection_ratio_5_percent.txt";
-			string line;
-			ifstream sample_file(sample_filename.c_str());
-			while (getline(sample_file, line)) {
-				vector < string > tokens = split(line.c_str(), '|');
-				pair1.push_back(tokens[0] + "|" + tokens[2]); // RNC and service
-				pair2.push_back(tokens[1] + "|" + tokens[3]); // item_ID and domain
-			}
-			sample_file.close();
+			//string sample_filename = "/export/qhome/zyu/intersect/zhenglin/data/src/intersection_ratio_5_percent.txt";
 
+			for (day = 0; day < 15; ++day) {
+				string sample_filename = intToString(reg + 1) + "-"
+						+ intToStringPad(year, 4) + "-" + intToStringPad(month,
+								2) + "-" + intToStringPad(day, 2) + "-sample.txt";
+								weekDay = getWeekDay(day, month, year);
+				string line;
+				ifstream sample_file(sample_filename.c_str());
+				
+				while (getline(sample_file, line)) {
+					vector < string > tokens = split(line.c_str(), '|');
+					timestamp = tokens[0];
+					string hour_temp = str.substr (8,2);
+					pair1.push_back(tokens[1] + "|" + tokens[17]  + "|" +   tokens[13]  + "|" + weekDay); // RNC and service
+					pair2.push_back(tokens[10] + "|" + tokens[18]   + "|" +   tokens[15]  + "|" + hour_temp); // item_ID and domain
+				}
+				sample_file.close();
+			}
 			vector<long long> realF0(numPairs, 0);
 			vector<long long> realF1(numPairs, 0);
 
@@ -171,11 +197,11 @@ int main(int argc, char** argv) {
 			vector<long long> count1(numPairs, 0);
 			vector<long long> count2(numPairs, 0);
 			vector<long long> countBoth(numPairs, 0);
-
+			
 			string region = regions[reg];
 			string super_region = region.substr(0, 2);
 			string sub_region = region.substr(3);
-			for (day = 1; day < 8; ++day) {
+			for (day = 1; day < 15; ++day) {
 				for (int hr = 0; hr < 24; ++hr) {
 					string hour = intToStringPad(hr, 2);
 					struct tm epoch;
@@ -186,32 +212,22 @@ int main(int argc, char** argv) {
 					epoch.tm_mon = month - 1;
 					epoch.tm_year = year - 1900;
 					string epoch_time = intToString(mktime(&epoch));
+
 					
-					
-				    std::tm time_in = { 0, 0, 0, // second, minute, hour
-				         day-0, month-1, year - 1900 }; // 1-based day, 0-based month, year since 1900
-
-				 std::time_t time_temp = std::mktime( & time_in );
-
-				 // the return value from localtime is a static global - do not call
-				 // this function from more than one thread!
-				 std::tm const *time_out = std::localtime( & time_temp );
-
-				 //std::cout << "I was born on (Sunday = 0) D.O.W. " << time_out->tm_wday << '\n';
-				    weekDayNum = time_out->tm_wday;
-				    weekDay =  weekdays[weekDayNum] ;
+					weekDay = getWeekDay(day, month ,year);
 					//pFile << region << " " << hour << " " << epoch_time << endl;
 
 					string filename = base_path + "/" + region + "/FULL/"
 							+ intToStringPad(year, 4) + "/" + intToStringPad(
-							month, 2) + "/" + intToStringPad(day, 2) + "/RNC."
-							+ super_region + "." + sub_region + ".PA."
-							+ epoch_time + ".dat.gz";
-
+									month, 2) + "/" + intToStringPad(day, 2) + "/RNC."
+									+ super_region + "." + sub_region + ".PA."
+									+ epoch_time + ".dat.gz";
+					
 					igzstream in(filename.c_str());
 					string line;
 					while (getline(in, line)) {
 						vector < string > tokens = split(line.c_str(), '|');
+						string timeStamp = tokens[0];
 						long long count = atoi(tokens[21].c_str());
 						long long value = atoi(tokens[22].c_str());
 						if (value < 0)
@@ -223,10 +239,8 @@ int main(int argc, char** argv) {
 						//if (value < 0) { pFile << tokens[21].c_str() << "|" << tokens[22].c_str() << endl; exit(1); }
 
 						for (int i = 0; i < numPairs; ++i) {
-							bool inFirst = (tokens[1] + "|" + tokens[17]  + “|” +   tokens[13]  + “|” + weekDay
-									== pair1[i]);
-							bool inSecond = (tokens[10] + "|" + tokens[18]   + “|” +   tokens[15]  + “|” + hour
-									== pair2[i]);
+							bool inFirst = ( tokens[1] + "|" + tokens[17]  + "|" +   tokens[13]  + "|" + weekDay 	== pair1[i]);
+							bool inSecond = (tokens[10] + "|" + tokens[18]   + "|" +   tokens[15]  + "|" + hr   == pair2[i]);
 							long long flowID = hash_S_LL(line); // NOTE: we hash the entire descriptor (not just the flow ID)
 
 
@@ -315,8 +329,8 @@ int main(int argc, char** argv) {
 				pFile << "intersection ratio: " << ir << "\t" << "errors F0: "
 						<< fabs(realF0[i] - estF0) / realF0[i] << "\t"
 						<< "errors F1 " << fabs(realF1[i] - estF1) / realF1[i]
-						<< "\t" << "errors F1/F0 " << fabs(realAvg - estF1
-						/ estF0) / realAvg << endl;
+						                                                    << "\t" << "errors F1/F0 " << fabs(realAvg - estF1
+						                                                    		/ estF0) / realAvg << endl;
 
 				// pFile << ir << "\t" << fabs(realF0[i] - estF0)/realF0[i] << "\t" << fabs(realF1[i] - estF1)/realF1[i] << "\t" << fabs(realAvg - estF1/estF0)/realAvg << endl;
 				/* end code for plotting error vs intersection rate */
@@ -327,7 +341,7 @@ int main(int argc, char** argv) {
 
 				pFile.close();
 				pFile.open(
-						"/export/qhome/zyu/intersect/zhenglin/data/src/ratio_five_percent_results_32768.txt.txt",
+						"/export/qhome/zyu/intersect/zhenglin/data/src/Four_8_experiments/sample_file_results_4096.txt",
 						ios::app);
 				AMS_Destroy(sketchSumF0);
 				AMS_Destroy(sketchSumF1);
@@ -335,7 +349,7 @@ int main(int argc, char** argv) {
 
 			for (int i = 0; i < numPairs; ++i)
 				pFile << count1[i] << "/" << count2[i] << "/" << countBoth[i]
-						<< "\t";
+				                                                           << "\t";
 			pFile << endl;
 
 			pFile << "Average Relative Error F0 : " << sumRelErrorF0 / numPairs

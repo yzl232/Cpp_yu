@@ -62,7 +62,7 @@ int main() {
 
 	// we will perform reservoir sample of all lines
 	int reservoirSize = 100, i = 1, j;
-
+	for (day = 1; day < 15; ++day){
 	for (int region_number = 0; region_number < num_regions; ++region_number) {
 		i = 1;
 		vector < string > reservoir(reservoirSize, "");
@@ -117,6 +117,6 @@ int main() {
 			sample_file << reservoir[i];
 		sample_file.close();
 	}
-
+}
 	return 0;
 }

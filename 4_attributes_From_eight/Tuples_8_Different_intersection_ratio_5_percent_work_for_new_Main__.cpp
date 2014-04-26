@@ -175,7 +175,7 @@ int main(int argc, char** argv) {
 			string region = regions[reg];
 			string super_region = region.substr(0, 2);
 			string sub_region = region.substr(3);
-			for (day = 1; day < 8; ++day) {
+			for (day = 1; day < 15; ++day) {
 				for (int hr = 0; hr < 24; ++hr) {
 					string hour = intToStringPad(hr, 2);
 					struct tm epoch;
@@ -223,10 +223,8 @@ int main(int argc, char** argv) {
 						//if (value < 0) { pFile << tokens[21].c_str() << "|" << tokens[22].c_str() << endl; exit(1); }
 
 						for (int i = 0; i < numPairs; ++i) {
-							bool inFirst = (tokens[1] + "|" + tokens[17]  + “|” +   tokens[13]  + “|” + weekDay
-									== pair1[i]);
-							bool inSecond = (tokens[10] + "|" + tokens[18]   + “|” +   tokens[15]  + “|” + hour
-									== pair2[i]);
+							bool inFirst = ( tokens[1] + "|" + tokens[17]  + "|" +   tokens[13]  + "|" + weekDay 	== pair1[i]);
+							bool inSecond = (tokens[10] + "|" + tokens[18]   + "|" +   tokens[15]  + "|" + hour   == pair2[i]);
 							long long flowID = hash_S_LL(line); // NOTE: we hash the entire descriptor (not just the flow ID)
 
 
