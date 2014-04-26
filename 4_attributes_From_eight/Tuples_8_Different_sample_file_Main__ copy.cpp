@@ -46,7 +46,7 @@ string getWeekDay(int day, int month, int year){
 	std::tm const *time_out = std::localtime(&time_temp);
 
 	//std::cout << "I was born on (Sunday = 0) D.O.W. " << time_out->tm_wday << '\n';
-	weekDayNum = time_out->tm_wday;
+	int weekDayNum = time_out->tm_wday;
 	return weekdays[weekDayNum];
 	
 }
@@ -141,7 +141,7 @@ int main(int argc, char** argv) {
 
 		
 		string weekDay;
-		int weekDayNum;
+		//int weekDayNum;
 
 		if (argc > 1)
 			buckets = atoi(argv[1]);
@@ -177,8 +177,8 @@ int main(int argc, char** argv) {
 				
 				while (getline(sample_file, line)) {
 					vector < string > tokens = split(line.c_str(), '|');
-					timestamp = tokens[0];
-					string hour_temp = str.substr (8,2);
+					string timestamp = tokens[0];
+					string hour_temp = timestamp.substr (8,2);
 					pair1.push_back(tokens[1] + "|" + tokens[17]  + "|" +   tokens[13]  + "|" + weekDay); // RNC and service
 					pair2.push_back(tokens[10] + "|" + tokens[18]   + "|" +   tokens[15]  + "|" + hour_temp); // item_ID and domain
 				}
@@ -240,7 +240,7 @@ int main(int argc, char** argv) {
 
 						for (int i = 0; i < numPairs; ++i) {
 							bool inFirst = ( tokens[1] + "|" + tokens[17]  + "|" +   tokens[13]  + "|" + weekDay 	== pair1[i]);
-							bool inSecond = (tokens[10] + "|" + tokens[18]   + "|" +   tokens[15]  + "|" + hr   == pair2[i]);
+							bool inSecond = (tokens[10] + "|" + tokens[18]   + "|" +   tokens[15]  + "|" + hour   == pair2[i]);
 							long long flowID = hash_S_LL(line); // NOTE: we hash the entire descriptor (not just the flow ID)
 
 
