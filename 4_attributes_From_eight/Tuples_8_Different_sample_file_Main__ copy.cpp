@@ -167,7 +167,7 @@ int main(int argc, char** argv) {
 			vector<string> pair1, pair2;
 			//string sample_filename = "/export/qhome/zyu/intersect/zhenglin/data/src/intersection_ratio_5_percent.txt";
 
-			for (day = 1; day < 3; ++day) {
+			for (day = 1; day < 8; ++day) {
 				string sample_filename = intToString(reg + 1) + "-"
 						+ intToStringPad(year, 4) + "-" + intToStringPad(month,
 								2) + "-" + intToStringPad(day, 2) + "-sample.txt";
@@ -212,7 +212,7 @@ int main(int argc, char** argv) {
 			string region = regions[reg];
 			string super_region = region.substr(0, 2);
 			string sub_region = region.substr(3);
-			for (day = 1; day < 3; ++day) {
+			for (day = 1; day < 8; ++day) {
 				for (int hr = 0; hr < 24; ++hr) {
 					string hour = intToStringPad(hr, 2);
 					struct tm epoch;
