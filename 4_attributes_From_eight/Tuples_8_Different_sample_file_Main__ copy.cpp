@@ -153,7 +153,7 @@ int main(int argc, char** argv) {
 		pFile << "buckets = " << buckets << ", s1 = " << s1 << ", depth = "
 				<< depth << endl;
 
-		int numPairs = 47;
+		int numPairs = 50;
 
 		vector<AMS_type *> sketch1F0(numPairs);
 		vector<AMS_type *> sketch2F0(numPairs);
@@ -167,7 +167,7 @@ int main(int argc, char** argv) {
 			vector<string> pair1, pair2;
 			//string sample_filename = "/export/qhome/zyu/intersect/zhenglin/data/src/intersection_ratio_5_percent.txt";
 
-			for (day = 0; day < 15; ++day) {
+			for (day = 1; day < 3; ++day) {
 				string sample_filename = intToString(reg + 1) + "-"
 						+ intToStringPad(year, 4) + "-" + intToStringPad(month,
 								2) + "-" + intToStringPad(day, 2) + "-sample.txt";
@@ -184,6 +184,17 @@ int main(int argc, char** argv) {
 				}
 				sample_file.close();
 			}
+			
+			
+			for (int i = 0; i < numPairs; ++i) {
+				cout << pair1[i] << "\n";
+				cout << pair2[i] << "\n";
+				
+				
+			}
+			
+			
+			
 			vector<long long> realF0(numPairs, 0);
 			vector<long long> realF1(numPairs, 0);
 
@@ -201,7 +212,7 @@ int main(int argc, char** argv) {
 			string region = regions[reg];
 			string super_region = region.substr(0, 2);
 			string sub_region = region.substr(3);
-			for (day = 1; day < 15; ++day) {
+			for (day = 1; day < 3; ++day) {
 				for (int hr = 0; hr < 24; ++hr) {
 					string hour = intToStringPad(hr, 2);
 					struct tm epoch;
@@ -240,6 +251,7 @@ int main(int argc, char** argv) {
 
 						for (int i = 0; i < numPairs; ++i) {
 							bool inFirst = ( tokens[1] + "|" + tokens[17]  + "|" +   tokens[13]  + "|" + weekDay 	== pair1[i]);
+							cout << tokens[10] + "|" + tokens[18]   + "|" +   tokens[15]  + "|" + hour << "\n";
 							bool inSecond = (tokens[10] + "|" + tokens[18]   + "|" +   tokens[15]  + "|" + hour   == pair2[i]);
 							long long flowID = hash_S_LL(line); // NOTE: we hash the entire descriptor (not just the flow ID)
 
@@ -262,6 +274,7 @@ int main(int argc, char** argv) {
 							// code for inserting into second sketch
 							if (inSecond) {
 								// insert into second sketch
+								pFile << "second ";
 								AMS_Update(sketch2F0[i], flowID, v_F0);
 								AMS_Update(sketch2F1[i], flowID, v_F1);
 								count2[i] += 1;
@@ -307,12 +320,12 @@ int main(int argc, char** argv) {
 				pFile << "abF1 " << abF1 << " " << "aF1 " << aF1 << " "
 						<< "bF1 " << bF1 << endl;
 				//long double estF1 = compute_intersect(abF1, aF1, bF1);
-				pFile << "pair1[i] " << pair1[i] << "|" << "pair2[i] "
+				pFile << "pair1[i] " << pair1[i] << "***" << "pair2[i] "
 						<< pair2[i] << endl;
 				pFile << "realF0[i] " << realF0[i] << " " << "realF1 "
 						<< realF1[i] << endl;
 				pFile << "estF0 " << estF0 << " " << "estF1 " << estF1 << endl;
-				pFile << endl;
+				
 
 				sumRelErrorF0 += fabs(realF0[i] - estF0) / realF0[i];
 				sumRelErrorF1 += fabs(realF1[i] - estF1) / realF1[i];
@@ -331,7 +344,7 @@ int main(int argc, char** argv) {
 						<< "errors F1 " << fabs(realF1[i] - estF1) / realF1[i]
 						                                                    << "\t" << "errors F1/F0 " << fabs(realAvg - estF1
 						                                                    		/ estF0) / realAvg << endl;
-
+				pFile << endl;
 				// pFile << ir << "\t" << fabs(realF0[i] - estF0)/realF0[i] << "\t" << fabs(realF1[i] - estF1)/realF1[i] << "\t" << fabs(realAvg - estF1/estF0)/realAvg << endl;
 				/* end code for plotting error vs intersection rate */
 
