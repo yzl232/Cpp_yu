@@ -142,10 +142,10 @@ int main(int argc, char** argv) {
 
 		int buckets = 32768, depth = 1, s1 = 1;
 
-	    //string weekdays[7] = { "Sun", "Mon", "Tues", "Wednes", "Thurs", "Fri",
+	    string weekdays[7] = { "Sun", "Mon", "Tues", "Wednes", "Thurs", "Fri",
 	    			"Satur" };
 	    string weekDay;
-	    //int weekDayNum;
+	    int weekDayNum;
 
 		if (argc > 1)
 			buckets = atoi(argv[1]);
