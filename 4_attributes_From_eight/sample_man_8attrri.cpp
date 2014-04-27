@@ -153,7 +153,7 @@ int main(int argc, char** argv) {
 		pFile << "buckets = " << buckets << ", s1 = " << s1 << ", depth = "
 				<< depth << endl;
 
-		int numPairs = 50;
+		int numPairs = 250;
 
 		vector<AMS_type *> sketch1F0(numPairs);
 		vector<AMS_type *> sketch2F0(numPairs);
@@ -213,7 +213,7 @@ int main(int argc, char** argv) {
 			string super_region = region.substr(0, 2);
 			string sub_region = region.substr(3);
 			for (day = 1; day < 8; ++day) {
-				for (int hr = 0; hr < 24; ++hr) {
+				for (int hr = 22; hr < 24; ++hr) {
 					string hour = intToStringPad(hr, 2);
 					struct tm epoch;
 					epoch.tm_sec = 0;
@@ -251,7 +251,7 @@ int main(int argc, char** argv) {
 
 						for (int i = 0; i < numPairs; ++i) {
 							bool inFirst = ( tokens[1] + "|" + tokens[17]  + "|" +   tokens[13]  + "|" + weekDay 	== pair1[i]);
-							cout << tokens[10] + "|" + tokens[18]   + "|" +   tokens[15]  + "|" + hour << "\n";
+							//cout << tokens[10] + "|" + tokens[18]   + "|" +   tokens[15]  + "|" + hour << "\n";
 							bool inSecond = (tokens[10] + "|" + tokens[18]   + "|" +   tokens[15]  + "|" + hour   == pair2[i]);
 							long long flowID = hash_S_LL(line); // NOTE: we hash the entire descriptor (not just the flow ID)
 
@@ -266,6 +266,7 @@ int main(int argc, char** argv) {
 							// code for inserting into first sketch
 							if (inFirst) {
 								// insert into first sketch
+								pFile << "first \n";
 								AMS_Update(sketch1F0[i], flowID, v_F0);
 								AMS_Update(sketch1F1[i], flowID, v_F1);
 								count1[i] += 1;
@@ -274,7 +275,7 @@ int main(int argc, char** argv) {
 							// code for inserting into second sketch
 							if (inSecond) {
 								// insert into second sketch
-								pFile << "second ";
+								pFile << "second \n";
 								AMS_Update(sketch2F0[i], flowID, v_F0);
 								AMS_Update(sketch2F1[i], flowID, v_F1);
 								count2[i] += 1;

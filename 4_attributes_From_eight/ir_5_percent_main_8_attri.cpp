@@ -31,6 +31,29 @@ string intToStringPad(int a, size_t length) {
 	return s;
 }
 
+
+
+string getWeekDay(int day, int month, int year){
+	string weekdays[7] = { "Sun", "Mon", "Tues", "Wednes", "Thurs", "Fri",
+			"Satur" };
+
+	std::tm time_in = { 0, 0, 0, // second, minute, hour
+			day - 0, month - 1, year - 1900 }; // 1-based day, 0-based month, year since 1900
+
+	std::time_t time_temp = std::mktime(&time_in);
+
+	// the return value from localtime is a static global - do not call
+	// this function from more than one thread!
+	std::tm const *time_out = std::localtime(&time_temp);
+
+	//std::cout << "I was born on (Sunday = 0) D.O.W. " << time_out->tm_wday << '\n';
+	int weekDayNum = time_out->tm_wday;
+	return weekdays[weekDayNum];
+	
+}
+
+
+
 /*** Functions for string tokenizer ***/
 // from: http://stackoverflow.com/questions/236129/how-to-split-a-string-in-c
 vector<string> &split(const string &s, char delim, vector<string> &elems) {
@@ -82,7 +105,7 @@ int main(int argc, char** argv) {
 
 		ofstream pFile;
 		pFile.open(
-				"/export/qhome/zyu/intersect/zhenglin/data/src/ratio_five_percent_results_32768.txt.txt",
+				"/export/qhome/zyu/intersect/zhenglin/data/src/Four_8_experiments/ratio_five_percent_results_32768.txt.txt",
 				ios::app);
 
 		if (pFile != NULL) {
@@ -97,7 +120,7 @@ int main(int argc, char** argv) {
 
 			pFile.close();
 			pFile.open(
-					"/export/qhome/zyu/intersect/zhenglin/data/src/ratio_five_percent_results_32768.txt.txt",
+					"/export/qhome/zyu/intersect/zhenglin/data/src/Four_8_experiments/ratio_five_percent_results_32768.txt.txt",
 					ios::app);
 
 		}
@@ -119,10 +142,10 @@ int main(int argc, char** argv) {
 
 		int buckets = 32768, depth = 1, s1 = 1;
 
-	    string weekdays[7] = { "Sun", "Mon", "Tues", "Wednes", "Thurs", "Fri",
+	    //string weekdays[7] = { "Sun", "Mon", "Tues", "Wednes", "Thurs", "Fri",
 	    			"Satur" };
 	    string weekDay;
-	    int weekDayNum;
+	    //int weekDayNum;
 
 		if (argc > 1)
 			buckets = atoi(argv[1]);
@@ -148,13 +171,13 @@ int main(int argc, char** argv) {
 			vector<string> pair1, pair2;
 			string
 					sample_filename =
-							"/export/qhome/zyu/intersect/zhenglin/data/src/intersection_ratio_5_percent.txt";
+							"/export/qhome/zyu/intersect/zhenglin/data/src/Four_8_experiments/i_R_five_percent.txt";
 			string line;
 			ifstream sample_file(sample_filename.c_str());
 			while (getline(sample_file, line)) {
 				vector < string > tokens = split(line.c_str(), '|');
-				pair1.push_back(tokens[0] + "|" + tokens[2]); // RNC and service
-				pair2.push_back(tokens[1] + "|" + tokens[3]); // item_ID and domain
+				pair1.push_back(tokens[4] + "|" + tokens[5] + "|" + tokens[6] + "|" + tokens[7]); // RNC and service
+				pair2.push_back(tokens[0] + "|" + tokens[1] + "|" + tokens[2] + "|" + tokens[3]); // item_ID and domain
 			}
 			sample_file.close();
 
@@ -188,19 +211,7 @@ int main(int argc, char** argv) {
 					string epoch_time = intToString(mktime(&epoch));
 					
 					
-				    std::tm time_in = { 0, 0, 0, // second, minute, hour
-				         day-0, month-1, year - 1900 }; // 1-based day, 0-based month, year since 1900
-
-				 std::time_t time_temp = std::mktime( & time_in );
-
-				 // the return value from localtime is a static global - do not call
-				 // this function from more than one thread!
-				 std::tm const *time_out = std::localtime( & time_temp );
-
-				 //std::cout << "I was born on (Sunday = 0) D.O.W. " << time_out->tm_wday << '\n';
-				    weekDayNum = time_out->tm_wday;
-				    weekDay =  weekdays[weekDayNum] ;
-					//pFile << region << " " << hour << " " << epoch_time << endl;
+				    weekDay = getWeekDay(day, month ,year);
 
 					string filename = base_path + "/" + region + "/FULL/"
 							+ intToStringPad(year, 4) + "/" + intToStringPad(
@@ -291,12 +302,12 @@ int main(int argc, char** argv) {
 				pFile << "abF1 " << abF1 << " " << "aF1 " << aF1 << " "
 						<< "bF1 " << bF1 << endl;
 				//long double estF1 = compute_intersect(abF1, aF1, bF1);
-				pFile << "pair1[i] " << pair1[i] << "|" << "pair2[i] "
+				pFile << "pair1[i] " << pair1[i] << "***" << "pair2[i] "
 						<< pair2[i] << endl;
 				pFile << "realF0[i] " << realF0[i] << " " << "realF1 "
 						<< realF1[i] << endl;
 				pFile << "estF0 " << estF0 << " " << "estF1 " << estF1 << endl;
-				pFile << endl;
+				
 
 				sumRelErrorF0 += fabs(realF0[i] - estF0) / realF0[i];
 				sumRelErrorF1 += fabs(realF1[i] - estF1) / realF1[i];
@@ -315,6 +326,7 @@ int main(int argc, char** argv) {
 						<< "errors F1 " << fabs(realF1[i] - estF1) / realF1[i]
 						<< "\t" << "errors F1/F0 " << fabs(realAvg - estF1
 						/ estF0) / realAvg << endl;
+				pFile << endl;
 
 				// pFile << ir << "\t" << fabs(realF0[i] - estF0)/realF0[i] << "\t" << fabs(realF1[i] - estF1)/realF1[i] << "\t" << fabs(realAvg - estF1/estF0)/realAvg << endl;
 				/* end code for plotting error vs intersection rate */
@@ -325,7 +337,7 @@ int main(int argc, char** argv) {
 
 				pFile.close();
 				pFile.open(
-						"/export/qhome/zyu/intersect/zhenglin/data/src/ratio_five_percent_results_32768.txt.txt",
+						"/export/qhome/zyu/intersect/zhenglin/data/src/Four_8_experiments/ratio_five_percent_results_32768.txt.txt",
 						ios::app);
 				AMS_Destroy(sketchSumF0);
 				AMS_Destroy(sketchSumF1);
