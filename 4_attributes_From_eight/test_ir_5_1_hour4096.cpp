@@ -101,7 +101,7 @@ int main(int argc, char** argv) {
 
 		ofstream pFile;
 		pFile.open(
-				"/export/qhome/zyu/intersect/zhenglin/data/src/Four_8_experiments/ratio_five_percent_results_4096.txt.txt",
+				"/export/qhome/zyu/intersect/zhenglin/data/src/Four_8_experiments/ratio_five_percent_results_32768.txt.txt",
 				ios::app);
 
 		if (pFile != NULL) {
@@ -116,7 +116,7 @@ int main(int argc, char** argv) {
 
 			pFile.close();
 			pFile.open(
-					"/export/qhome/zyu/intersect/zhenglin/data/src/Four_8_experiments/ratio_five_percent_results_4096.txt.txt",
+					"/export/qhome/zyu/intersect/zhenglin/data/src/Four_8_experiments/ratio_five_percent_results_32768.txt.txt",
 					ios::app);
 
 		}
@@ -136,7 +136,7 @@ int main(int argc, char** argv) {
 
 		int day = 1, month = 1, year = 2014;
 
-		int buckets = 4096, depth = 1, s1 = 1;
+		int buckets = 32768, depth = 1, s1 = 1;
 
 	    string weekdays[7] = { "Sun", "Mon", "Tues", "Wednes", "Thurs", "Fri",
 	    			"Satur" };
@@ -333,7 +333,7 @@ int main(int argc, char** argv) {
 
 				pFile.close();
 				pFile.open(
-						"/export/qhome/zyu/intersect/zhenglin/data/src/Four_8_experiments/ratio_five_percent_results_4096.txt.txt",
+						"/export/qhome/zyu/intersect/zhenglin/data/src/Four_8_experiments/ratio_five_percent_results_32768.txt.txt",
 						ios::app);
 				AMS_Destroy(sketchSumF0);
 				AMS_Destroy(sketchSumF1);
